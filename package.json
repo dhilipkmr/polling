@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "echo 'No build step!'",
-    "start": "node src/entry/index.js"
+    "start": "node src/entry/index.js",
+    "postinstall": "npx puppeteer browsers install chrome"
   },
   "dependencies": {
     "axios": "^1.9.0",

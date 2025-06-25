@@ -30,6 +30,14 @@ export async function checkMyntraDiscount() {
       waitUntil: 'networkidle2',
       timeout: 30000 // 30 seconds timeout
     });
+    // Wait for the product selector to appear
+    try {
+      await page.waitForSelector('.product-base a', { timeout: 15000 });
+    } catch (waitError) {
+      console.warn('⚠️ .product-base a selector not found after waiting. Dumping HTML for debugging.');
+      const html = await page.content();
+      console.log(html);
+    }
 
     try {
       const productUrl = await page.evaluate(() => {
@@ -50,7 +58,9 @@ export async function checkMyntraDiscount() {
         await page.waitForNetworkIdle({ idleTime: 1000, timeout: 5000 });
         console.log('✅ Page content stabilized after navigation');
       } else {
-        console.log('⚠️ Could not find product URL');
+        const html = await page.content();
+        console.warn('⚠️ Could not find product URL. Dumping HTML for debugging.');
+        console.log(html);
       }
     } catch (urlError) {
       console.log('⚠️ Error while handling product URL:', urlError.message);
